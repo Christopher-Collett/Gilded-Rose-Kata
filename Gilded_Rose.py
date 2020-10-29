@@ -11,20 +11,25 @@ class GildedRose(object):
 
 
 class Item:
-
     def __init__(self, name, sell_in, quality):
         self.name = name
         self.sell_in = sell_in
         self.quality = quality
+
+    def __repr__(self):
+        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
+
+
+class Item_With_Additional_Methods(Item):
+
+    def __init__(self, name, sell_in, quality):
+        super().__init__(name, sell_in, quality)
 
         self.min_quality = 0
         self.max_quality = 50
         self.original_quality_delta = self.quality_delta = -1
 
         self.sell_in_delta = -1
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
     def update_item(self):
         self.update_sell_in()
@@ -54,14 +59,14 @@ class Item:
         return value
 
 
-class Item_Aged_Brie(Item):
+class Item_Aged_Brie(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
         self.original_quality_delta = self.quality_delta = 1
 
 
-class Item_Backstage_Passes(Item):
+class Item_Backstage_Passes(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
@@ -78,7 +83,7 @@ class Item_Backstage_Passes(Item):
             self.quality = self.quality_after_sell_in_past
 
 
-class Item_Sulfuras(Item):
+class Item_Sulfuras(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
@@ -90,7 +95,7 @@ class Item_Sulfuras(Item):
         self.sell_in_delta = 0
 
 
-class Item_Conjured(Item):
+class Item_Conjured(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
@@ -107,4 +112,4 @@ def make_item(name, sell_in, quality):
     elif name == "Conjured":
         return Item_Conjured(name, sell_in, quality)
     else:
-        return Item(name, sell_in, quality)
+        return Item_With_Additional_Methods(name, sell_in, quality)
