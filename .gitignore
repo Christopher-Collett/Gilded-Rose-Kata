@@ -1,0 +1,4 @@
+__pycache__/*
+*.txt
+cov_html/*
+.coverage
