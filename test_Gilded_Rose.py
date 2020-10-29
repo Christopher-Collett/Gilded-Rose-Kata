@@ -1,7 +1,7 @@
 from numpy import loadtxt
 import pytest
 
-from Gilded_Rose import GildedRose, Item
+from Gilded_Rose import GildedRose, Item, make_item
 
 
 def get_test_cases(filename):
@@ -20,7 +20,7 @@ def get_test_cases(filename):
                          get_test_cases('Gilded_Rose_Example.csv'))
 def test_predefined_quality_standard(name, sell_in, quality,
                                      expected_sell_in, expected_quality):
-    item = Item(name, sell_in, quality)
+    item = make_item(name, sell_in, quality)
     gilded_rose = GildedRose([item])
     gilded_rose.update_quality()
     assert item.sell_in == expected_sell_in

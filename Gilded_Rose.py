@@ -7,15 +7,7 @@ class GildedRose(object):
         self.items = items
 
     def update_quality(self):
-        for item in self.items:
-            if item.name == "Aged Brie":
-                item.update_aged_brie_quality()
-            elif item.name == "Backstage passes to a TAFKAL80ETC concert":
-                item.udpate_backstage_passes_quality()
-            elif item.name == "Sulfuras, Hand of Ragnaros":
-                item.update_sulfuras_quality()
-            else:
-                item.update_quality()
+        [item.update_quality() for item in self.items]
 
 
 class Item:
@@ -26,27 +18,6 @@ class Item:
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
-
-    def update_aged_brie_quality(self):
-        if self.quality_under_50():
-            self.increment_quality()
-        self.decrement_sell_in()
-        if self.sell_in_under_0() and self.quality_under_50():
-            self.increment_quality()
-
-    def udpate_backstage_passes_quality(self):
-        if self.quality_under_50():
-            self.increment_quality()
-            if self.sell_in_under_11() and self.quality_under_50():
-                self.increment_quality()
-            if self.sell_in_under_6() and self.quality_under_50():
-                self.increment_quality()
-        self.decrement_sell_in()
-        if self.sell_in_under_0():
-            self.reset_quality()
-
-    def update_sulfuras_quality(self):
-        pass
 
     def update_quality(self):
         if self.quality_over_0():
@@ -81,3 +52,41 @@ class Item:
 
     def reset_quality(self):
         self.quality = 0
+
+
+class Item_Aged_Brie(Item):
+    def update_quality(self):
+        if self.quality_under_50():
+            self.increment_quality()
+        self.decrement_sell_in()
+        if self.sell_in_under_0() and self.quality_under_50():
+            self.increment_quality()
+
+
+class Item_Backstage_Passes(Item):
+    def update_quality(self):
+        if self.quality_under_50():
+            self.increment_quality()
+            if self.sell_in_under_11() and self.quality_under_50():
+                self.increment_quality()
+            if self.sell_in_under_6() and self.quality_under_50():
+                self.increment_quality()
+        self.decrement_sell_in()
+        if self.sell_in_under_0():
+            self.reset_quality()
+
+
+class Item_Sulfuras(Item):
+    def update_quality(self):
+        pass
+
+
+def make_item(name, sell_in, quality):
+    if name == "Aged Brie":
+        return Item_Aged_Brie(name, sell_in, quality)
+    elif name == "Backstage passes to a TAFKAL80ETC concert":
+        return Item_Backstage_Passes(name, sell_in, quality)
+    elif name == "Sulfuras, Hand of Ragnaros":
+        return Item_Sulfuras(name, sell_in, quality)
+    else:
+        return Item(name, sell_in, quality)
