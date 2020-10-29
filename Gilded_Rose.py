@@ -8,60 +8,14 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if self.quality_over_0(item):
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        self.decrement_quality(item)
+            if item.name == "Aged Brie":
+                item.update_aged_brie_quality()
+            elif item.name == "Backstage passes to a TAFKAL80ETC concert":
+                item.udpate_backstage_passes_quality()
+            elif item.name == "Sulfuras, Hand of Ragnaros":
+                item.update_sulfuras_quality()
             else:
-                if self.quality_under_50(item):
-                    self.increment_quality(item)
-                    if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                        if self.sell_in_under_11(item):
-                            if self.quality_under_50(item):
-                                self.increment_quality(item)
-                        if self.sell_in_under_6(item):
-                            if self.quality_under_50(item):
-                                self.increment_quality(item)
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                self.decrement_sell_in(item)
-            if self.sell_in_under_0(item):
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if self.quality_over_0(item):
-                            if item.name != "Sulfuras, Hand of Ragnaros":
-                                self.decrement_quality(item)
-                    else:
-                        self.reset_quality(item)
-                else:
-                    if self.quality_under_50(item):
-                        self.increment_quality(item)
-
-    def sell_in_under_0(self, item):
-        return item.sell_in < 0
-
-    def sell_in_under_6(self, item):
-        return item.sell_in < 6
-
-    def sell_in_under_11(self, item):
-        return item.sell_in < 11
-
-    def decrement_sell_in(self, item):
-        item.sell_in -= 1
-
-    def quality_over_0(self, item):
-        return item.quality > 0
-
-    def quality_under_50(self, item):
-        return item.quality < 50
-
-    def increment_quality(self, item):
-        item.quality += 1
-
-    def decrement_quality(self, item):
-        item.quality -= 1
-
-    def reset_quality(self, item):
-        item.quality = 0
+                item.update_quality()
 
 
 class Item:
@@ -72,3 +26,58 @@ class Item:
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
+
+    def update_aged_brie_quality(self):
+        if self.quality_under_50():
+            self.increment_quality()
+        self.decrement_sell_in()
+        if self.sell_in_under_0() and self.quality_under_50():
+            self.increment_quality()
+
+    def udpate_backstage_passes_quality(self):
+        if self.quality_under_50():
+            self.increment_quality()
+            if self.sell_in_under_11() and self.quality_under_50():
+                self.increment_quality()
+            if self.sell_in_under_6() and self.quality_under_50():
+                self.increment_quality()
+        self.decrement_sell_in()
+        if self.sell_in_under_0():
+            self.reset_quality()
+
+    def update_sulfuras_quality(self):
+        pass
+
+    def update_quality(self):
+        if self.quality_over_0():
+            self.decrement_quality()
+        self.decrement_sell_in()
+        if self.sell_in_under_0() and self.quality_over_0():
+            self.decrement_quality()
+
+    def sell_in_under_0(self):
+        return self.sell_in < 0
+
+    def sell_in_under_6(self):
+        return self.sell_in < 6
+
+    def sell_in_under_11(self):
+        return self.sell_in < 11
+
+    def decrement_sell_in(self):
+        self.sell_in -= 1
+
+    def quality_over_0(self):
+        return self.quality > 0
+
+    def quality_under_50(self):
+        return self.quality < 50
+
+    def increment_quality(self):
+        self.quality += 1
+
+    def decrement_quality(self):
+        self.quality -= 1
+
+    def reset_quality(self):
+        self.quality = 0
