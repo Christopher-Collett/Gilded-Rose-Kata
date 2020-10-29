@@ -75,6 +75,14 @@ def test_backstage_quality_is_0_after_day_0():
                           0, 10, -1, 0)
 
 
+def test_conjured_degrade_by_2_normally():
+    test_before_and_after('Conjured', 5, 10, 4, 8)
+
+
+def test_conjured_degrade_by_4_after_day_0():
+    test_before_and_after('Conjured', 0, 10, -1, 6)
+
+
 @pytest.mark.parametrize('name, sell_in, quality,' +
                          'expected_sell_in, expected_quality',
                          get_test_cases('Gilded_Rose_Example.csv'))

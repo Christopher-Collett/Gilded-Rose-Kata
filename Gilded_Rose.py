@@ -90,6 +90,13 @@ class Item_Sulfuras(Item):
         self.sell_in_delta = 0
 
 
+class Item_Conjured(Item):
+    def __init__(self, name, sell_in, quality):
+        super().__init__(name, sell_in, quality)
+
+        self.original_quality_delta = self.quality_delta = -2
+
+
 def make_item(name, sell_in, quality):
     if name == "Aged Brie":
         return Item_Aged_Brie(name, sell_in, quality)
@@ -97,5 +104,7 @@ def make_item(name, sell_in, quality):
         return Item_Backstage_Passes(name, sell_in, quality)
     elif name == "Sulfuras, Hand of Ragnaros":
         return Item_Sulfuras(name, sell_in, quality)
+    elif name == "Conjured":
+        return Item_Conjured(name, sell_in, quality)
     else:
         return Item(name, sell_in, quality)
