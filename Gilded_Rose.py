@@ -25,11 +25,17 @@ class Item_With_Additional_Methods(Item):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
-        self.min_quality = 0
-        self.max_quality = 50
+        self.min_quality_value = (0,)
+        self.max_quality_value = (50,)
         self.original_quality_delta = self.quality_delta = -1
 
         self.sell_in_delta = -1
+
+    def min_quality(self):
+        return self.min_quality_value[0]
+
+    def max_quality(self):
+        return self.max_quality_value[0]
 
     def update_item(self):
         self.update_sell_in()
@@ -41,7 +47,8 @@ class Item_With_Additional_Methods(Item):
 
     def check_quality(self):
         self.quality = self.get_in_range(self.quality,
-                                         self.min_quality, self.max_quality)
+                                         self.min_quality(),
+                                         self.max_quality())
 
     def update_sell_in(self):
         self.sell_in += self.sell_in_delta
@@ -87,8 +94,8 @@ class Item_Sulfuras(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
 
-        self.min_quality = 80
-        self.max_quality = 80
+        self.min_quality_value = (80,)
+        self.max_quality_value = (80,)
         self.quality_delta = 0
 
         self.sell_in = 0
