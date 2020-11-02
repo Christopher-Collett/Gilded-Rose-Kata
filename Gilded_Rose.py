@@ -22,12 +22,12 @@ class Item:
 
 class Item_With_Additional_Methods(Item):
 
-    def __init__(self, name, sell_in, quality):
+    def __init__(self, name, sell_in, quality, quality_delta=-1):
         super().__init__(name, sell_in, quality)
 
         self.min_quality_value = (0,)
         self.max_quality_value = (50,)
-        self.original_quality_delta = self.quality_delta = -1
+        self.original_quality_delta = self.quality_delta = quality_delta
 
         self.sell_in_delta = -1
 
@@ -66,13 +66,6 @@ class Item_With_Additional_Methods(Item):
         return value
 
 
-class Item_Aged_Brie(Item_With_Additional_Methods):
-    def __init__(self, name, sell_in, quality):
-        super().__init__(name, sell_in, quality)
-
-        self.original_quality_delta = self.quality_delta = 1
-
-
 class Item_Backstage_Passes(Item_With_Additional_Methods):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality)
@@ -102,21 +95,16 @@ class Item_Sulfuras(Item_With_Additional_Methods):
         self.sell_in_delta = 0
 
 
-class Item_Conjured(Item_With_Additional_Methods):
-    def __init__(self, name, sell_in, quality):
-        super().__init__(name, sell_in, quality)
-
-        self.original_quality_delta = self.quality_delta = -2
-
-
 def make_item(name, sell_in, quality):
     if name == "Aged Brie":
-        return Item_Aged_Brie(name, sell_in, quality)
+        return Item_With_Additional_Methods(name, sell_in,
+                                            quality, quality_delta=1)
     elif name == "Backstage passes to a TAFKAL80ETC concert":
         return Item_Backstage_Passes(name, sell_in, quality)
     elif name == "Sulfuras, Hand of Ragnaros":
         return Item_Sulfuras(name, sell_in, quality)
     elif name == "Conjured":
-        return Item_Conjured(name, sell_in, quality)
+        return Item_With_Additional_Methods(name, sell_in,
+                                            quality, quality_delta=-2)
     else:
         return Item_With_Additional_Methods(name, sell_in, quality)
