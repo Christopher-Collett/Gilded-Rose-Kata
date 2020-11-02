@@ -50,29 +50,32 @@ def test_backstage_doesnt_go_over_50():
                           5, 50, 4, 50)
 
 
-def test_backstage_increase_by_2_on_day_10():
-    test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
-                          11, 10, 10, 12)
+def test_backstage_increase_by_1_before_day_10():
+    start_days = range(12, 20)
+    for day in start_days:
+        test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
+                              day, 10, day-1, 11)
 
 
-def test_backstage_increase_by_2_after_day_10():
-    test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
-                          10, 10, 9, 12)
+def test_backstage_increase_by_2_on_and_after_day_10():
+    start_days = range(7, 12)
+    for day in start_days:
+        test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
+                              day, 10, day-1, 12)
 
 
-def test_backstage_increase_by_3_on_day_5():
-    test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
-                          6, 10, 5, 13)
-
-
-def test_backstage_increase_by_3_after_day_5():
-    test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
-                          5, 10, 4, 13)
+def test_backstage_increase_by_3_on_and_after_day_5():
+    start_days = range(1, 7)
+    for day in start_days:
+        test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
+                              day, 10, day-1, 13)
 
 
 def test_backstage_quality_is_0_after_day_0():
-    test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
-                          0, 10, -1, 0)
+    start_days = range(0, -5)
+    for day in start_days:
+        test_before_and_after('Backstage passes to a TAFKAL80ETC concert',
+                              day, 10, day-1, 0)
 
 
 def test_conjured_degrade_by_2_normally():
